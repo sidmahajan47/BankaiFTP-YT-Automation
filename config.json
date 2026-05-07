@@ -1,0 +1,24 @@
+{
+  "drive": {
+    "credentials_file": "credentials/sid.json",
+    "token_file": "tokens/token_sid_drive.json"
+  },
+  "clients": [
+    {
+      "name": "eknath",
+      "drive_folder_id": "1gv8g3zNoYUXZEbWHwdD4xksXcNhgYhMW",
+      "youtube_credentials_file": "credentials/eknath.json",
+      "youtube_token_file": "tokens/token_eknath_yt.json",
+      "log_file": "logs/eknath-uploader.log",
+      "state_file": "state/uploaded_eknath.txt"
+    },
+    {
+      "name": "nashikpg",
+      "drive_folder_id": "1hEafOvToFYkflzNyMSt2w-s1H9zUTo9b",
+      "youtube_credentials_file": "credentials/nashikpg.json",
+      "youtube_token_file": "tokens/token_nashikpg_yt.json",
+      "log_file": "logs/nashikpg-uploader.log",
+      "state_file": "state/uploaded_nashikpg.txt"
+    }
+  ]
+}

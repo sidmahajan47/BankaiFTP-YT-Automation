@@ -1,0 +1,33 @@
+[Unit]
+Description=Nashik PG Drive to YouTube uploader
+Wants=network-online.target
+After=network-online.target
+StartLimitIntervalSec=300
+
+[Service]
+Type=simple
+User=anonsid
+Group=anonsid
+WorkingDirectory=/home/anonsid/project/YOUTUBE\x20AUTOMATION
+EnvironmentFile=/home/anonsid/project/YOUTUBE\x20AUTOMATION/nashik-pg-uploader.env
+ExecStart=/home/anonsid/project/YOUTUBE\x20AUTOMATION/venv/bin/python /home/anonsid/project/YOUTUBE\x20AUTOMATION/drive_to_youtube_uploader.py run
+
+# ── Restart Policy ──
+Restart=always
+RestartSec=15
+StartLimitBurst=5
+
+# ── Security Hardening ──
+NoNewPrivileges=true
+ProtectSystem=strict
+ReadWritePaths=/home/anonsid/project/YOUTUBE\x20AUTOMATION /tmp
+PrivateTmp=true
+MemoryMax=512M
+
+# ── Logging ──
+StandardOutput=journal
+StandardError=journal
+SyslogIdentifier=nashik-pg-uploader
+
+[Install]
+WantedBy=multi-user.target

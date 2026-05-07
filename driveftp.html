@@ -1,0 +1,197 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>BANKAIFTP Dashboard</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+:root{
+  --background:#050506;
+  --panel:rgba(15,15,17,.82);
+  --panel2:rgba(22,22,25,.72);
+  --border:rgba(255,255,255,.09);
+  --border-red:rgba(239,68,68,.28);
+  --red:#ef4444;
+  --red2:#991b1b;
+  --red3:#450a0a;
+  --green:#22c55e;
+  --amber:#f59e0b;
+  --text:#f8fafc;
+  --muted:#a1a1aa;
+  --dim:#5b5b64;
+  --shadow:0 24px 80px rgba(0,0,0,.45),0 0 44px rgba(239,68,68,.08);
+  --radius:8px;
+}
+*{box-sizing:border-box}html{background:var(--background);scroll-behavior:smooth}body{margin:0;min-height:100vh;background:var(--background);color:var(--muted);font:14px/1.5 Inter,system-ui,sans-serif;overflow-x:hidden}
+.mono{font-family:"DM Mono",ui-monospace,monospace}
+.gradient-dots,.wash,.noise,#particles{position:fixed;inset:0;pointer-events:none}
+.gradient-dots{--dot-size:8px;--spacing:10px;--hex-spacing:17.32px;z-index:0;opacity:.5;background-color:var(--background);background-image:radial-gradient(circle at 50% 50%,transparent 1.5px,var(--background) 0 var(--dot-size),transparent var(--dot-size)),radial-gradient(circle at 50% 50%,transparent 1.5px,var(--background) 0 var(--dot-size),transparent var(--dot-size)),radial-gradient(circle at 50% 50%,#f00,transparent 60%),radial-gradient(circle at 50% 50%,#ff0,transparent 60%),radial-gradient(circle at 50% 50%,#0f0,transparent 60%),radial-gradient(ellipse at 50% 50%,#00f,transparent 60%);background-size:var(--spacing) var(--hex-spacing),var(--spacing) var(--hex-spacing),200% 200%,200% 200%,200% 200%,200% var(--hex-spacing);background-position:0 0,calc(var(--spacing)/2) calc(var(--hex-spacing)/2),800% 400%,1000% -400%,-1200% -600%,400% var(--hex-spacing);animation:dots 20s linear infinite,hue 6s linear infinite}
+.wash{z-index:1;background:radial-gradient(circle at 72% 8%,rgba(239,68,68,.24),transparent 34%),linear-gradient(90deg,rgba(5,5,6,.98),rgba(5,5,6,.72) 36%,rgba(5,5,6,.96)),linear-gradient(180deg,rgba(5,5,6,.34),rgba(5,5,6,.98))}
+.noise{z-index:2;opacity:.11;background:repeating-linear-gradient(0deg,rgba(255,255,255,.04) 0 1px,transparent 1px 3px);mix-blend-mode:screen}
+#particles{z-index:3}
+@keyframes dots{to{background-position:0 0,calc(var(--spacing)/2) calc(var(--hex-spacing)/2),0 0,0 0,0 0,0 0}}@keyframes hue{to{filter:hue-rotate(360deg)}}@keyframes pulse{0%,100%{opacity:1}50%{opacity:.34}}@keyframes rise{from{opacity:0;transform:translateY(14px)}to{opacity:1;transform:translateY(0)}}
+.app{position:relative;z-index:4;min-height:100vh;display:grid;grid-template-columns:232px minmax(0,1fr)}
+.side{position:sticky;top:0;height:100vh;padding:22px 14px;display:flex;flex-direction:column;border-right:1px solid var(--border);background:linear-gradient(180deg,rgba(8,8,9,.96),rgba(12,12,14,.76));backdrop-filter:blur(18px);box-shadow:18px 0 60px rgba(0,0,0,.35)}
+.brand{display:flex;align-items:center;gap:12px;padding:0 8px;margin-bottom:28px}.brand-mark{width:40px;height:40px;border-radius:8px;display:grid;place-items:center;color:#fff;background:linear-gradient(135deg,var(--red),var(--red3));box-shadow:0 0 34px rgba(239,68,68,.36)}.brand-name{display:block;color:var(--text);font-weight:800;letter-spacing:.08em}.brand-sub{display:block;color:var(--dim);font-size:11px;margin-top:1px}
+.nav{display:grid;gap:6px}.nav-item{height:42px;display:flex;align-items:center;gap:11px;padding:0 12px;border:1px solid transparent;border-radius:8px;color:var(--dim);text-decoration:none;font-weight:600;transition:.16s ease}.nav-item svg{width:17px;height:17px}.nav-item:hover{color:var(--text);background:rgba(255,255,255,.035);border-color:var(--border)}.nav-item.active{color:#fff;background:linear-gradient(135deg,rgba(239,68,68,.24),rgba(153,27,27,.18));border-color:var(--border-red);box-shadow:inset 3px 0 0 var(--red)}
+.side-bottom{margin-top:auto;padding:14px 10px 0;border-top:1px solid var(--border);display:grid;gap:8px}.mini-status{display:flex;align-items:center;gap:8px;color:var(--muted);font-size:12px}.dot{width:8px;height:8px;border-radius:999px;background:var(--dim);flex:0 0 auto}.dot.live{background:var(--green);box-shadow:0 0 16px rgba(34,197,94,.5);animation:pulse 2s ease-in-out infinite}.dot.red{background:var(--red);box-shadow:0 0 16px rgba(239,68,68,.45)}
+.main{min-width:0;padding:0 30px 34px}.topbar{position:sticky;top:0;z-index:8;height:72px;display:flex;align-items:center;justify-content:space-between;gap:18px;margin:0 -30px 24px;padding:0 30px;border-bottom:1px solid var(--border);background:linear-gradient(180deg,rgba(5,5,6,.92),rgba(5,5,6,.7));backdrop-filter:blur(18px)}h1{margin:0;color:var(--text);font-size:25px;line-height:1.1;letter-spacing:-.01em}.date{margin-top:5px;color:var(--dim);font-size:12px}.topbar-right{display:flex;align-items:center;gap:10px;flex-wrap:wrap;justify-content:flex-end}
+.live-badge,.chip{height:34px;display:inline-flex;align-items:center;gap:8px;padding:0 12px;border:1px solid var(--border);border-radius:8px;background:rgba(15,15,17,.62);color:var(--muted);font-size:12px}.chip strong{color:var(--text)}
+.btn{height:36px;display:inline-flex;align-items:center;justify-content:center;gap:8px;padding:0 14px;border:1px solid var(--border);border-radius:8px;background:rgba(18,18,20,.86);color:var(--text);font:700 13px Inter,sans-serif;cursor:pointer;transition:.16s ease;white-space:nowrap}.btn:hover{transform:translateY(-1px);border-color:rgba(239,68,68,.45);box-shadow:0 0 24px rgba(239,68,68,.12)}.btn-primary{border-color:rgba(239,68,68,.6);background:linear-gradient(135deg,var(--red),var(--red2));color:#fff}.btn-success{border-color:rgba(34,197,94,.55);background:rgba(34,197,94,.08);color:#86efac}.btn-muted{color:var(--dim)}.btn:disabled{opacity:.55;cursor:wait;transform:none}.avatar{width:34px;height:34px;border:1px solid var(--border-red);border-radius:8px;background:radial-gradient(circle at 35% 25%,#fca5a5,transparent 24%),linear-gradient(135deg,#18181b,#450a0a)}
+.hero{display:grid;grid-template-columns:minmax(0,1.1fr) minmax(300px,.9fr);gap:16px;margin-bottom:16px}.panel,.card,.hero-card{position:relative;overflow:hidden;border:1px solid var(--border);border-radius:var(--radius);background:linear-gradient(140deg,rgba(255,255,255,.055),rgba(255,255,255,.015)),var(--panel);box-shadow:var(--shadow);backdrop-filter:blur(16px);animation:rise .5s ease both}.hero-card{min-height:188px;padding:24px}.hero-card:before,.card:before,.panel:before{content:"";position:absolute;inset:0 0 auto;height:1px;background:linear-gradient(90deg,transparent,rgba(239,68,68,.78),transparent)}.eyebrow{color:var(--red);font-size:12px;font-weight:800;text-transform:uppercase;letter-spacing:.12em}.hero-title{margin:10px 0 10px;color:var(--text);font-size:clamp(30px,4vw,56px);line-height:.95;letter-spacing:-.04em;font-weight:800}.hero-copy{max-width:720px;color:var(--muted);font-size:15px}.hero-actions{display:flex;gap:10px;flex-wrap:wrap;margin-top:20px}.ops-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}.ops-tile{min-height:88px;padding:16px;border:1px solid var(--border);border-radius:8px;background:rgba(5,5,6,.5)}.ops-label{color:var(--dim);font-size:11px;text-transform:uppercase;letter-spacing:.08em}.ops-val{margin-top:8px;color:var(--text);font:500 24px/1 "DM Mono",monospace;overflow-wrap:anywhere}
+.row{display:grid;gap:16px;margin-bottom:16px}.row-4{grid-template-columns:repeat(4,minmax(0,1fr))}.card{min-height:142px;padding:20px}.card-label{display:flex;align-items:center;gap:8px;color:var(--dim);font-size:12px;text-transform:uppercase;letter-spacing:.08em;font-weight:800}.card-value{margin:18px 0 8px;color:var(--text);font:500 clamp(34px,4vw,48px)/1 "DM Mono",monospace}.card-sub{color:var(--muted);font-size:12px;overflow-wrap:anywhere}.card:hover,.panel:hover{border-color:rgba(239,68,68,.32)}
+.content-grid{display:grid;grid-template-columns:minmax(0,1fr) minmax(330px,.42fr);gap:16px;align-items:start}.panel{padding:22px;margin-bottom:16px}.panel-head{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:18px}.panel-title{color:var(--text);font-size:13px;text-transform:uppercase;letter-spacing:.09em;font-weight:800}.panel-sub{color:var(--dim);font-size:12px}.table-scroll{overflow-x:auto}table{width:100%;min-width:720px;border-collapse:collapse}th{padding:0 14px 12px;border-bottom:1px solid var(--border);color:var(--dim);font-size:11px;text-transform:uppercase;letter-spacing:.08em;text-align:left}td{height:52px;padding:0 14px;border-bottom:1px solid rgba(255,255,255,.065);color:var(--muted);white-space:nowrap}td:nth-child(2){max-width:360px;overflow:hidden;text-overflow:ellipsis;color:var(--text)}tbody tr:hover td{background:rgba(239,68,68,.045)}.pill{display:inline-flex;align-items:center;gap:6px;padding:3px 10px;border:1px solid;border-radius:999px;font-size:11px;font-weight:800;text-transform:capitalize}.pill-live{border-color:rgba(34,197,94,.48);color:#86efac}.pill-up{border-color:rgba(245,158,11,.5);color:#fbbf24}.pill-q{border-color:rgba(161,161,170,.38);color:var(--muted)}.pill-fail{border-color:rgba(239,68,68,.6);color:#fca5a5}
+.auto-grid{display:grid;grid-template-columns:1fr;gap:20px}.field-label{margin-bottom:8px;color:var(--dim);font-size:11px;text-transform:uppercase;letter-spacing:.08em;font-weight:800}.pills{display:flex;flex-wrap:wrap;gap:6px;padding:4px;border:1px solid var(--border);border-radius:8px;background:rgba(5,5,6,.55)}.pill-btn{height:30px;padding:0 11px;border:0;border-radius:6px;background:transparent;color:var(--muted);cursor:pointer}.pill-btn.active{background:var(--red);color:#fff}.toggle-row{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:14px;border:1px solid var(--border);border-radius:8px;background:rgba(5,5,6,.36)}.toggle-label{color:var(--text);font-weight:700}.toggle-sub{color:var(--dim);font-size:12px}.toggle{position:relative;width:42px;height:24px;border:0;border-radius:999px;background:#27272a;cursor:pointer}.toggle.on{background:rgba(239,68,68,.42)}.toggle .thumb{position:absolute;top:3px;left:3px;width:18px;height:18px;border-radius:999px;background:var(--muted);transition:.18s ease}.toggle.on .thumb{background:#fff;transform:translateX(18px)}.auto-val{color:var(--text);font-size:42px;line-height:1}.status-row{display:flex;align-items:center;gap:8px;color:var(--muted)}
+.logs{display:grid;gap:8px;max-height:360px;overflow:auto}.log-line{display:grid;grid-template-columns:126px 72px minmax(0,1fr);gap:8px;padding:9px 10px;border:1px solid var(--border);border-radius:7px;background:rgba(5,5,6,.48)}.log-level{font-weight:800;font-size:11px}.log-level.INFO{color:#fca5a5}.log-level.WARNING{color:var(--amber)}.log-level.ERROR{color:var(--red)}.log-msg{white-space:pre-wrap;overflow-wrap:anywhere;color:var(--muted)}.empty-state{display:grid;place-items:center;min-height:120px;color:var(--dim);border:1px dashed var(--border);border-radius:8px}
+.toast-wrap{position:fixed;right:16px;bottom:16px;z-index:9999;display:grid;gap:8px;width:min(320px,calc(100vw - 32px))}.toast{position:relative;overflow:hidden;padding:12px 14px;border:1px solid var(--border-red);border-radius:8px;background:rgba(15,15,17,.96);box-shadow:var(--shadow);animation:slideIn .18s ease}.toast .bar-l{position:absolute;left:0;top:0;bottom:0;width:3px}.toast-head{display:flex;justify-content:space-between;gap:8px}.toast-t{color:var(--text);font-weight:800}.toast-m{margin-top:2px;color:var(--muted);font-size:12px}.toast-x{border:0;background:transparent;color:var(--dim);cursor:pointer}.toast-prog{position:absolute;left:0;bottom:0;height:2px}@keyframes slideIn{from{opacity:0;transform:translateX(100%)}to{opacity:1;transform:translateX(0)}}
+@media(max-width:1100px){.app{grid-template-columns:80px minmax(0,1fr)}.brand-copy,.nav-item span,.side-bottom span:not(.dot){display:none}.side{padding:18px 12px}.nav-item{justify-content:center}.hero,.content-grid{grid-template-columns:1fr}.row-4{grid-template-columns:repeat(2,1fr)}}@media(max-width:700px){.app{display:block}.side{position:relative;height:auto}.brand-copy,.nav-item span,.side-bottom span:not(.dot){display:block}.nav-item{justify-content:flex-start}.main{padding:0 14px 28px}.topbar{position:relative;height:auto;align-items:flex-start;flex-direction:column;margin:0 -14px 18px;padding:16px 14px}.row-4,.ops-grid{grid-template-columns:1fr}.log-line{grid-template-columns:1fr}}@media(prefers-reduced-motion:reduce){*,*:before,*:after{animation-duration:.001ms!important;animation-iteration-count:1!important;scroll-behavior:auto!important}}
+</style>
+</head>
+<body>
+<div class="gradient-dots" aria-hidden="true"></div><div class="wash" aria-hidden="true"></div><div class="noise" aria-hidden="true"></div><canvas id="particles"></canvas>
+<div class="app">
+<aside class="side">
+<div class="brand"><div class="brand-mark"><svg viewBox="0 0 24 24" fill="none" width="20" height="20"><path d="M12 3v18M4 8h16M4 16h16" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"/></svg></div><div class="brand-copy"><span class="brand-name">BANKAIFTP</span><span class="brand-sub">Drive to YouTube</span></div></div>
+<nav class="nav">
+<a class="nav-item active" href="#"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><rect x="3" y="3" width="7" height="9" rx="1"/><rect x="14" y="3" width="7" height="5" rx="1"/><rect x="14" y="12" width="7" height="9" rx="1"/><rect x="3" y="16" width="7" height="5" rx="1"/></svg><span>Overview</span></a>
+<a class="nav-item" href="#uploadsPanel"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><path d="m17 8-5-5-5 5"/><path d="M12 3v12"/></svg><span>Uploads</span></a>
+<a class="nav-item" href="#autoPanel"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><path d="m13 2-9 12h7l-1 8 10-13h-7V2Z"/></svg><span>Automation</span></a>
+<a class="nav-item" href="#logsPanel"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><path d="M5 4h14v16H5z"/><path d="M9 9h6M9 13h7M9 17h4"/></svg><span>Logs</span></a>
+</nav>
+<div class="side-bottom"><div class="mini-status"><span class="dot live" id="sideDot"></span><span id="sideText">Backend check</span></div><div class="mini-status"><span class="dot red"></span><span>Black / red build</span></div></div>
+</aside>
+<main class="main">
+<header class="topbar"><div><h1>Overview</h1><div class="date" id="dateStr"></div></div><div class="topbar-right"><div class="live-badge" id="liveBadge"><span class="dot live" id="liveDot"></span><span id="liveText">Connecting...</span></div><button class="btn" onclick="runAll()" style="border-color:rgba(34,197,94,.45);color:#86efac">Run All</button><button class="btn btn-primary" id="topRun" onclick="runNow()">Scan Now</button><div class="avatar"></div></div></header>
+<section class="hero">
+<div class="hero-card"><div class="eyebrow">Automation Command</div><div class="hero-title">BANKAIFTP<br>Upload Monitor</div><div class="hero-copy">Track Drive polling, YouTube upload state, credentials health, errors, and manual scans from one focused control surface.</div><div class="hero-actions"><button class="btn btn-primary" onclick="runNow()">Start Scan</button><a class="btn" href="#uploadsPanel" style="text-decoration:none">View Uploads</a></div></div>
+<div class="hero-card"><div class="panel-head"><div><div class="panel-title">Live Signals</div><div class="panel-sub">Updated from backend APIs</div></div></div><div class="ops-grid"><div class="ops-tile"><div class="ops-label">Service</div><div class="ops-val" id="serviceVal">--</div></div><div class="ops-tile"><div class="ops-label">Next Scan</div><div class="ops-val" id="nextVal">05:00</div></div><div class="ops-tile"><div class="ops-label">Latest</div><div class="ops-val" id="latestVal">None</div></div><div class="ops-tile"><div class="ops-label">Health</div><div class="ops-val" id="healthVal">Check</div></div></div></div>
+</section>
+<section class="row row-4" id="kpis"></section>
+<section id="clientCards" style="display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:14px;margin-bottom:16px"></section>
+<section class="content-grid"><div><section class="panel" id="uploadsPanel"></section><section class="panel" id="logsPanel"><div class="panel-head"><div><div class="panel-title">Recent Logs</div><div class="panel-sub" id="logMeta">Waiting for logs</div></div></div><div class="logs" id="logs"></div></section></div><aside><section class="panel" id="autoPanel"></section></aside></section>
+</main>
+</div>
+<div class="toast-wrap" id="toastWrap"></div>
+<script>
+!function(){const c=document.getElementById('particles'),x=c.getContext('2d');let w,h,pts=[];function resize(){w=c.width=innerWidth;h=c.height=innerHeight}function init(){pts=[];for(let i=0;i<70;i++)pts.push({x:Math.random()*w,y:Math.random()*h,r:Math.random()*1.6+.45,vx:(Math.random()-.5)*.28,vy:(Math.random()-.5)*.28,a:Math.random()*.28+.05})}function draw(){x.clearRect(0,0,w,h);pts.forEach(p=>{p.x+=p.vx;p.y+=p.vy;if(p.x<0)p.x=w;if(p.x>w)p.x=0;if(p.y<0)p.y=h;if(p.y>h)p.y=0;x.beginPath();x.arc(p.x,p.y,p.r,0,Math.PI*2);x.fillStyle=`rgba(239,68,68,${p.a})`;x.fill()});pts.forEach((a,i)=>{for(let j=i+1;j<pts.length;j++){const b=pts[j],dx=a.x-b.x,dy=a.y-b.y,d=Math.sqrt(dx*dx+dy*dy);if(d<118){x.beginPath();x.moveTo(a.x,a.y);x.lineTo(b.x,b.y);x.strokeStyle=`rgba(239,68,68,${.055*(1-d/118)})`;x.stroke()}}});requestAnimationFrame(draw)}resize();init();addEventListener('resize',()=>{resize();init()});draw()}();
+const S={interval:300,autoUp:true,remaining:300,runState:'idle',uploads:[{n:'Waiting for backend data',sz:'--',dur:'--',at:'--',st:'queued'}],kpis:[{label:'Uploaded',val:0,color:'var(--green)',sub:'none yet'},{label:'Folder Total',val:0,color:'var(--red)',sub:'waiting for poll'},{label:'Errors',val:0,color:'var(--red)',sub:'none'},{label:'Warnings',val:0,color:'var(--amber)',sub:'none'}]};
+let cdTimer=null,toastN=0,apiOk=false;
+document.getElementById('dateStr').textContent=new Date().toLocaleDateString('en-US',{weekday:'long',month:'long',day:'numeric',year:'numeric'});
+function esc(v){return String(v??'').replaceAll('&','&amp;').replaceAll('<','&lt;').replaceAll('>','&gt;').replaceAll('"','&quot;').replaceAll("'","&#039;")}
+function bytes(s){if(!s)return'0 B';const u=['B','KB','MB','GB'];let v=s,i=0;while(v>=1024&&i<3){v/=1024;i++}return v.toFixed(i?1:0)+' '+u[i]}
+function fmt(t){const h=Math.floor(t/3600),m=Math.floor(t%3600/60),s=t%60;return(h?String(h).padStart(2,'0')+':':'')+String(m).padStart(2,'0')+':'+String(s).padStart(2,'0')}
+function toast(type,title,msg){const wrap=document.getElementById('toastWrap'),c={success:'var(--green)',error:'var(--red)',info:'var(--red)'},id=++toastN,d=document.createElement('div');d.className='toast';d.id='t'+id;d.innerHTML=`<div class="bar-l" style="background:${c[type]}"></div><div class="toast-head"><div><div class="toast-t">${esc(title)}</div><div class="toast-m">${esc(msg)}</div></div><button class="toast-x" onclick="rmToast(${id})">x</button></div><div class="toast-prog" id="tp${id}" style="background:${c[type]};width:100%"></div>`;wrap.appendChild(d);const st=Date.now();!function tick(){const p=Math.max(0,(3200-(Date.now()-st))/3200*100),b=document.getElementById('tp'+id);if(b)b.style.width=p+'%';p>0?requestAnimationFrame(tick):rmToast(id)}()}
+function rmToast(id){const e=document.getElementById('t'+id);if(e){e.style.opacity='0';e.style.transform='translateX(100%)';e.style.transition='all .15s';setTimeout(()=>e.remove(),160)}}
+function renderKPIs(){document.getElementById('kpis').innerHTML=S.kpis.map((k,i)=>`<div class="card"><div class="card-label"><span class="dot ${k.pulse?'live':''}" style="background:${k.color}"></span>${esc(k.label)}</div><div class="card-value" id="kv${i}">0</div><div class="card-sub">${esc(k.sub)}</div></div>`).join('');S.kpis.forEach((k,i)=>{const el=document.getElementById('kv'+i),t=Number(k.val||0),st=performance.now();!function f(now){const p=Math.min((now-st)/650,1);el.textContent=String(Math.round(t*(1-Math.pow(1-p,3)))).padStart(2,'0');p<1&&requestAnimationFrame(f)}(st)})}
+function renderUploads(){const c=document.getElementById('uploadsPanel'),pills={live:'pill-live',uploading:'pill-up',queued:'pill-q',failed:'pill-fail'},dots={live:'var(--green)',uploading:'var(--amber)',queued:'var(--dim)',failed:'var(--red)'};const rows=S.uploads.length?S.uploads.map(u=>`<tr><td><span class="dot" style="background:${dots[u.st]||'var(--dim)'}"></span></td><td>${esc(u.n)}</td><td class="mono">${esc(u.sz||'')}</td><td class="mono">${esc(u.dur||'')}</td><td class="mono">${esc(u.at||'-')}</td><td><span class="pill ${pills[u.st]||'pill-q'}">${esc(u.st||'queued')}</span></td></tr>`).join(''):`<tr><td colspan="6"><div class="empty-state">No upload history yet</div></td></tr>`;c.innerHTML=`<div class="panel-head"><div><div class="panel-title">Recent Uploads</div><div class="panel-sub">Drive files tracked after YouTube upload</div></div><span class="chip"><strong>${S.uploads.length}</strong> rows</span></div><div class="table-scroll"><table><thead><tr><th style="width:32px"></th><th>Video</th><th>Size</th><th>Duration</th><th>Uploaded</th><th>Status</th></tr></thead><tbody>${rows}</tbody></table></div>`}
+const ivs=[{l:'5 min',v:300},{l:'15 min',v:900},{l:'30 min',v:1800},{l:'1 hr',v:3600},{l:'6 hr',v:21600},{l:'Daily',v:86400}];
+function renderAuto(){const pills=ivs.map(i=>`<button class="pill-btn${S.interval===i.v?' active':''}" onclick="setIv(${i.v},'${i.l}')">${i.l}</button>`).join(''),stxt=S.autoUp?'Watching Drive':'Paused';let runBtn=S.runState==='idle'?`<button class="btn btn-primary" style="width:100%" onclick="runNow()">Scan Now</button>`:S.runState==='scanning'?`<button class="btn btn-primary" style="width:100%" disabled>Scanning...</button>`:S.runState==='found'?`<button class="btn btn-success" style="width:100%">Run Started</button>`:`<button class="btn btn-muted" style="width:100%">Nothing New</button>`;document.getElementById('autoPanel').innerHTML=`<div class="panel-head"><div><div class="panel-title">Automation</div><div class="panel-sub">Manual scan and local countdown controls</div></div></div><div class="auto-grid"><div><div class="field-label">Check Drive Every</div><div class="pills">${pills}</div></div><div class="toggle-row"><div><div class="toggle-label">Auto-Upload</div><div class="toggle-sub">Push to YouTube when detected</div></div><button class="toggle ${S.autoUp?'on':'off'}" onclick="toggleAuto()" aria-label="Toggle auto upload"><span class="thumb"></span></button></div><div><div class="field-label">Next Scan In</div><div class="auto-val mono" id="cd">${S.autoUp?fmt(S.remaining):'--:--'}</div></div><div class="status-row"><span class="dot ${S.autoUp?'live':''}"></span>${stxt}</div>${runBtn}</div>`;document.getElementById('nextVal').textContent=S.autoUp?fmt(S.remaining):'Paused'}
+function setIv(v,l){S.interval=v;S.remaining=v;renderAuto();startCd();toast('info','Interval Updated','Scanning every '+l)}
+function toggleAuto(){S.autoUp=!S.autoUp;if(!S.autoUp){clearInterval(cdTimer);cdTimer=null}else{S.remaining=S.interval;startCd()}renderAuto();toast('info','Settings',S.autoUp?'Auto-upload enabled':'Auto-upload paused')}
+function startCd(){if(cdTimer)clearInterval(cdTimer);if(!S.autoUp)return;cdTimer=setInterval(()=>{S.remaining=S.remaining<=1?S.interval:S.remaining-1;const e=document.getElementById('cd');if(e)e.textContent=fmt(S.remaining);document.getElementById('nextVal').textContent=fmt(S.remaining)},1000)}
+function renderLogs(entries){const box=document.getElementById('logs');if(!entries||!entries.length){box.innerHTML='<div class="empty-state">No logs available yet</div>';document.getElementById('logMeta').textContent='No entries';return}document.getElementById('logMeta').textContent=entries.length+' latest entries';box.innerHTML=entries.slice(-80).reverse().map(e=>`<div class="log-line"><div class="mono">${esc(e.timestamp||'')}</div><div class="log-level ${esc(e.level||'RAW')}">${esc(e.level||'RAW')}</div><div class="log-msg">${esc(e.message||e.raw||'')}</div></div>`).join('')}
+// ── Multi-client state ────────────────────────────────────────────
+let activeClient=null;
+function renderClientCards(clients){
+  const box=document.getElementById('clientCards');
+  if(!box||!clients||!clients.length)return;
+  const healthIcon=h=>h==='ok'?'<span class="dot live"></span>':'<span class="dot" style="background:var(--amber)"></span>';
+  box.innerHTML=clients.map(c=>`
+    <div class="panel" style="padding:18px;cursor:pointer;border:1px solid ${c.health==='ok'?'var(--border)':'rgba(239,68,68,.45)'}" onclick="selectClient('${esc(c.name)}')">
+      <div class="panel-head" style="margin-bottom:10px">
+        <div>${healthIcon(c.health)}<span style="color:var(--text);font-weight:800;margin-left:8px">${esc(c.name)}</span></div>
+        <button class="btn btn-primary" style="height:28px;padding:0 10px;font-size:11px" onclick="event.stopPropagation();runClient('${esc(c.name)}')">Run</button>
+      </div>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;font-size:12px">
+        <div><div style="color:var(--dim)">Uploads</div><div style="color:var(--text);font-weight:700">${c.uploads?.count||0}</div></div>
+        <div><div style="color:var(--dim)">Status</div><div style="color:var(--text);font-weight:700">${c.running?'Running':'Idle'}</div></div>
+        <div style="grid-column:1/-1"><div style="color:var(--dim)">Folder ID</div><div class="mono" style="color:var(--muted);font-size:11px;overflow:hidden;text-overflow:ellipsis">${esc(c.drive_folder_id||'')}</div></div>
+        ${c.issues?.length?`<div style="grid-column:1/-1;color:#fca5a5;font-size:11px">⚠ ${esc(c.issues[0])}</div>`:''}
+      </div>
+    </div>`).join('');
+}
+function selectClient(name){
+  activeClient=name;
+  fetch('/api/logs/'+name+'?limit=120').then(r=>r.json()).then(j=>renderLogs(j.entries||[])).catch(()=>{});
+  toast('info','Client Selected',name+' logs loaded');
+}
+async function runClient(name){
+  try{const r=await fetch('/api/run/'+name,{method:'POST'}),j=await r.json();toast(r.ok?'success':'error',r.ok?'Run Started':'Failed',j.message||'');setTimeout(fetchData,2000)}catch(e){toast('error','Offline','Cannot reach backend')}}
+async function runAll(){
+  try{const r=await fetch('/api/run/all',{method:'POST'}),j=await r.json();toast(r.ok?'success':'error',r.ok?'All Clients Started':'Failed',j.message||'');setTimeout(fetchData,2000)}catch(e){toast('error','Offline','Cannot reach backend')}}
+
+async function fetchData(){
+  try{
+    const stRes=await fetch('/api/status');
+    const st=await stRes.json();
+    apiOk=true;
+    document.getElementById('liveDot').className='dot live';
+    document.getElementById('sideDot').className='dot live';
+    document.getElementById('liveText').textContent='Live · '+st.generated_at;
+    document.getElementById('sideText').textContent='Backend live';
+    document.getElementById('healthVal').textContent=st.health==='ok'?'Good':'Alert';
+
+    // Multi-client path
+    if(st.multi&&st.clients){
+      renderClientCards(st.clients);
+      const totUp=st.clients.reduce((s,c)=>s+(c.uploads?.count||0),0);
+      const totErr=st.clients.reduce((s,c)=>s+(c.log?.errors||0),0);
+      const totWarn=st.clients.reduce((s,c)=>s+(c.log?.warnings||0),0);
+      const anyRun=st.clients.some(c=>c.running);
+      document.getElementById('serviceVal').textContent=anyRun?'Running':'Idle';
+      S.kpis=[
+        {label:'Clients',val:st.clients.length,color:'var(--green)',sub:st.clients.map(c=>c.name).join(', ')},
+        {label:'Total Uploads',val:totUp,color:'var(--red)',sub:'across all clients'},
+        {label:'Errors',val:totErr,color:'var(--red)',sub:'across all logs'},
+        {label:'Warnings',val:totWarn,color:'var(--amber)',sub:'across all logs'},
+      ];
+      renderKPIs();
+      // Load logs for active client or first client
+      const logClient=activeClient||st.clients[0]?.name;
+      if(logClient){
+        const lgRes=await fetch('/api/logs/'+logClient+'?limit=120');
+        const lg=await lgRes.json();
+        renderLogs(lg.entries||[]);
+        const upRes=await fetch('/api/uploads/'+logClient);
+        const up=await upRes.json();
+        S.uploads=(up.records||[]).slice(0,10).map(r=>({n:r.file_name||r.drive_id,sz:'',dur:'',at:r.uploaded_at||'-',st:r.youtube_id?'live':'queued'}));
+        renderUploads();
+      }
+    } else {
+      // Legacy single-client
+      const[upRes,lgRes]=await Promise.all([fetch('/api/uploads'),fetch('/api/logs?limit=120')]);
+      const up=await upRes.json(),lg=await lgRes.json();
+      const sm=st.clients?.[0]?.summary||st.summary||{};
+      const svc=st.service?.active?'Active':(st.processes?.length?'Running':'Idle');
+      document.getElementById('serviceVal').textContent=svc;
+      document.getElementById('latestVal').textContent=st.clients?.[0]?.uploads?.latest?.youtube_id||'None';
+      S.kpis=[
+        {label:'Uploaded',val:st.clients?.[0]?.uploads?.count||0,color:'var(--green)',sub:'none yet'},
+        {label:'Folder Total',val:sm.total||0,color:'var(--red)',sub:(sm.new||0)+' new this poll'},
+        {label:'Errors',val:st.clients?.[0]?.log?.errors||0,color:'var(--red)',sub:'none'},
+        {label:'Warnings',val:st.clients?.[0]?.log?.warnings||0,color:'var(--amber)',sub:'idle'},
+      ];
+      renderKPIs();
+      S.uploads=(up.records||[]).slice(0,10).map(r=>({n:r.file_name||r.drive_id,sz:'',dur:'',at:r.uploaded_at||'-',st:r.youtube_id?'live':'queued'}));
+      renderUploads();
+      renderLogs(lg.entries||[]);
+    }
+    document.getElementById('dateStr').textContent='Updated: '+st.generated_at;
+  }catch(e){
+    if(!apiOk){
+      document.getElementById('liveDot').className='dot red';
+      document.getElementById('sideDot').className='dot red';
+      document.getElementById('liveText').textContent='Offline · demo mode';
+      document.getElementById('sideText').textContent='Backend offline';
+    }
+  }
+}
+async function apiRunOnce(){if(S.runState!=='idle')return;S.runState='scanning';renderAuto();try{const r=await fetch('/api/run-once',{method:'POST'}),j=await r.json();S.runState='found';S.remaining=S.interval;renderAuto();toast(r.ok?'success':'error',r.ok?'Run Started':'Failed',j.message||'Unknown');setTimeout(()=>{S.runState='idle';renderAuto();fetchData()},2500)}catch(e){S.runState='empty';renderAuto();toast('error','Offline','Cannot reach backend');setTimeout(()=>{S.runState='idle';renderAuto()},1500)}}
+function runNow(){if(apiOk){apiRunOnce();return}if(S.runState!=='idle')return;S.runState='scanning';renderAuto();setTimeout(()=>{S.runState='empty';renderAuto();toast('info','Demo Scan','Backend is offline');setTimeout(()=>{S.runState='idle';renderAuto()},1500)},1200)}
+renderKPIs();renderUploads();renderAuto();renderLogs([]);startCd();fetchData();setInterval(fetchData,10000);
+</script>
+</body>
+</html>

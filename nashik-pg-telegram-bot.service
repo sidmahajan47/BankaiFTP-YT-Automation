@@ -1,0 +1,28 @@
+[Unit]
+Description=Nashik PG Telegram control bot
+Wants=network-online.target
+After=network-online.target
+StartLimitIntervalSec=300
+
+[Service]
+Type=simple
+User=anonsid
+Group=anonsid
+ExecStart="/home/anonsid/project/YOUTUBE AUTOMATION/venv/bin/python" "/home/anonsid/project/YOUTUBE AUTOMATION/telegram_bot.py" --env-file "/home/anonsid/project/YOUTUBE AUTOMATION/nashik-pg-uploader.env"
+
+# Restart if Telegram/network hiccups interrupt long polling.
+Restart=always
+RestartSec=15
+StartLimitBurst=5
+
+# Security hardening
+NoNewPrivileges=true
+MemoryMax=256M
+
+# Logging
+StandardOutput=journal
+StandardError=journal
+SyslogIdentifier=nashik-pg-telegram-bot
+
+[Install]
+WantedBy=multi-user.target
