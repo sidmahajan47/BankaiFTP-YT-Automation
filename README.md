@@ -1,4 +1,4 @@
-# Nashik PG Drive to YouTube Uploader
+EverScale YT Automation Tool
 
 This service watches one Google Drive folder every 5 minutes. When it finds a video file that is not listed in `uploaded.txt`, it asks Gemini for a YouTube title and description, downloads the video to `/tmp`, uploads it to YouTube as public, records the Drive file ID, and deletes the temporary file.
 
